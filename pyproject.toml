@@ -1,0 +1,20 @@
+[project]
+name = "name2smiles-bench"
+version = "0.1.0"
+description = "A reproducible name-to-SMILES benchmark dataset built from PubChem"
+requires-python = ">=3.11"
+dependencies = [
+    "rdkit",
+    "requests",
+    "pandas",
+    "numpy",
+    "tqdm",
+    "matplotlib",
+    "python-dotenv",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.venv/
+venv/
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Generated data
+data/
+
+# Local state
+tmp/
+logs/
+*.log
+
+# Editor and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
