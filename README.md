@@ -269,6 +269,11 @@ difficulty metadata. The full 1,500-record dataset, images, coordinate files,
 and raw evaluation outputs stay local. Contact the author if you need the
 full dataset or the 800-row evaluation JSONL.
 
+## Citation
+
+If you use this benchmark, dataset, or software, cite this repository using
+[`CITATION.cff`](CITATION.cff). Please also cite PubChem as described below.
+
 ## License
 
 The source code is released under the MIT License. The dataset, documentation,

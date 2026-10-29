@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: >-
+  If you use this benchmark, dataset, or software, please cite this repository
+  using the metadata below. Please also cite PubChem as described in the README.
+type: software
+title: "Name2SMILES Dataset: A PubChem Name-to-SMILES Benchmark"
+authors:
+  - name: GoldenFern
+    website: "https://github.com/GoldenFern"
+repository-code: "https://github.com/GoldenFern/name2smiles-bench"
+url: "https://github.com/GoldenFern/name2smiles-bench"
+abstract: >-
+  A PubChem-derived name-to-SMILES benchmark with coverage-aware dataset
+  selection, a 100-record mini set, RDKit structure scoring, and a
+  provider-agnostic language-model evaluation client.
+keywords:
+  - chemistry
+  - SMILES
+  - PubChem
+  - RDKit
+  - language-model evaluation
+license:
+  - MIT
+  - CC-BY-4.0
