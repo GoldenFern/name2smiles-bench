@@ -47,8 +47,10 @@ can later support image-to-SMILES experiments.
 ## Mini test set
 
 A 100-record subset is available in `data/mini_100.jsonl` for quick,
-low-cost evaluation. Records keep their original IDs, images, and coordinate
-paths. The first model benchmark used this subset because of budget limits;
+low-cost evaluation, with a CSV copy in `data/mini_100.csv`. Both files are
+tracked. The full dataset and its assets stay local. Records keep their original
+IDs, images, and coordinate paths; these asset files are not needed for
+name-to-SMILES evaluation. The first model benchmark used this subset because of budget limits;
 the eight tested models are lightweight, Flash, or preview models, not
 flagship models.
 

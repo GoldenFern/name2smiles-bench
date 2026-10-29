@@ -3,7 +3,7 @@
 Recorded on **2026-10-28**. All prices are **CNY per 1M tokens** and are used
 for planning, not billing. Recheck the source pages before a large run.
 
-The machine-readable table is `config/llm_pricing.json`. The estimator is
+The bundled machine-readable table is `src/name2smiles/llm/llm_pricing.json`. The estimator is
 `scripts/estimate_costs.py`.
 
 ## Domestic models

@@ -1,6 +1,6 @@
 """Model price table and cost estimation.
 
-Prices are stored in ``config/llm_pricing.json`` with a base currency and a
+Prices are stored in the bundled ``llm_pricing.json`` with a base currency and a
 unit of per one million tokens. The 4Router prices are the displayed console
 prices and already include the group multiplier.
 
@@ -21,8 +21,7 @@ from typing import Any
 from .registry import resolve_model
 from .types import Usage
 
-ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_PRICING_PATH = ROOT / "config" / "llm_pricing.json"
+DEFAULT_PRICING_PATH = Path(__file__).with_name("llm_pricing.json")
 
 
 @dataclass(frozen=True)

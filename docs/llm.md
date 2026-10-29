@@ -31,28 +31,28 @@ in-flight requests. The limit is per `LLMClient` instance.
 
 | Registry key | Model ID | Provider | Token field | Max output | Tags |
 |---|---|---|---|---|---|
-| `deepseek-v4-pro` | `deepseek-v4-pro` | deepseek | `max_tokens` | 16384 | reasoning, flagship |
-| `deepseek-flash` | `deepseek-flash` | deepseek | `max_tokens` | 16384 | reasoning, fast |
-| `glm-5.3` | `glm-5.3` | zhipu | `max_tokens` | 16384 | reasoning, flagship |
-| `glm-5.3-flash` | `glm-5.3-flash` | zhipu | `max_tokens` | 16384 | reasoning, fast |
-| `minimax-m3.1-flash` | `MiniMax-M3.1-Flash` | minimax | `max_tokens` | 16384 | fast |
-| `longcat-2.5-preview` | `LongCat-2.5-Preview` | longcat | `max_tokens` | 16384 | reasoning, preview |
-| `mimo-v2.6-flash` | `mimo-v2.6-flash` | mimo | `max_tokens` | 16384 | reasoning, fast |
-| `mimo-v2.6-pro` | `mimo-v2.6-pro` | mimo | `max_tokens` | 16384 | reasoning, flagship |
-| `kimi-k2.6` | `kimi-k2.6` | kimi | `max_tokens` | 16384 | reasoning, open-weights |
-| `kimi-k3.1-pro` | `kimi-k3.1-pro` | kimi | `max_tokens` | 16384 | reasoning, flagship |
-| `qwen3.8-flash` | `qwen3.8-flash` | qwen | `max_tokens` | 16384 | reasoning, fast |
-| `qwen3.8-max` | `qwen3.8-max` | qwen | `max_tokens` | 16384 | reasoning, flagship |
-| `gpt-6-astra` | `gpt-6-astra` | 4router-gpt | `max_completion_tokens` | 16384 | flagship |
-| `gpt-6.1-sol` | `gpt-6.1-sol` | 4router-gpt | `max_completion_tokens` | 16384 | flagship |
-| `gpt-6.1-terra` | `gpt-6.1-terra` | 4router-gpt | `max_completion_tokens` | 16384 | flagship |
-| `gpt-6-luna` | `gpt-6-luna` | 4router-gpt | `max_completion_tokens` | 16384 | fast |
-| `claude-opus-5.5` | `claude-opus-5-5` | 4router-claude | `max_tokens` | 16384 | flagship |
-| `claude-haiku-5.5` | `claude-haiku-5-5` | 4router-claude | `max_tokens` | 16384 | fast |
-| `gemini-4-argon` | `gemini-4-argon` | 4router-gemini | `max_tokens` | 16384 | flagship |
-| `gemini-3.8-flash` | `gemini-3.8-flash` | 4router-gemini | `max_tokens` | 16384 | fast |
+| `deepseek-v4-pro` | `deepseek-v4-pro` | deepseek | `max_tokens` | 50000 | reasoning, flagship |
+| `deepseek-flash` | `deepseek-flash` | deepseek | `max_tokens` | 50000 | reasoning, fast |
+| `glm-5.3` | `glm-5.3` | zhipu | `max_tokens` | 50000 | reasoning, flagship |
+| `glm-5.3-flash` | `glm-5.3-flash` | zhipu | `max_tokens` | 50000 | reasoning, fast |
+| `minimax-m3.1-flash` | `MiniMax-M3.1-Flash` | minimax | `max_tokens` | 50000 | fast |
+| `longcat-2.5-preview` | `LongCat-2.5-Preview` | longcat | `max_tokens` | 50000 | reasoning, preview |
+| `mimo-v2.6-flash` | `mimo-v2.6-flash` | mimo | `max_tokens` | 50000 | reasoning, fast |
+| `mimo-v2.6-pro` | `mimo-v2.6-pro` | mimo | `max_tokens` | 50000 | reasoning, flagship |
+| `kimi-k2.6` | `kimi-k2.6` | kimi | `max_tokens` | 50000 | reasoning, open-weights |
+| `kimi-k3.1-pro` | `kimi-k3.1-pro` | kimi | `max_tokens` | 50000 | reasoning, flagship |
+| `qwen3.8-flash` | `qwen3.8-flash` | qwen | `max_tokens` | 50000 | reasoning, fast |
+| `qwen3.8-max` | `qwen3.8-max` | qwen | `max_tokens` | 50000 | reasoning, flagship |
+| `gpt-6-astra` | `gpt-6-astra` | 4router-gpt | `max_completion_tokens` | 50000 | flagship |
+| `gpt-6.1-sol` | `gpt-6.1-sol` | 4router-gpt | `max_completion_tokens` | 50000 | flagship |
+| `gpt-6.1-terra` | `gpt-6.1-terra` | 4router-gpt | `max_completion_tokens` | 50000 | flagship |
+| `gpt-6-luna` | `gpt-6-luna` | 4router-gpt | `max_completion_tokens` | 50000 | fast |
+| `claude-opus-5.5` | `claude-opus-5-5` | 4router-claude | `max_tokens` | 50000 | flagship |
+| `claude-haiku-5.5` | `claude-haiku-5-5` | 4router-claude | `max_tokens` | 50000 | fast |
+| `gemini-4-argon` | `gemini-4-argon` | 4router-gemini | `max_tokens` | 50000 | flagship |
+| `gemini-3.8-flash` | `gemini-3.8-flash` | 4router-gemini | `max_tokens` | 50000 | fast |
 
-The output cap is 16,384 tokens for every model. It is a request cap, not the
+The output cap is 50,000 tokens for every model. It is a request cap, not the
 model's hard limit. The cap is intentionally generous because reasoning
 models spend tokens before writing the visible answer.
 
@@ -105,7 +105,7 @@ Useful options:
 
 - `--prompt`: change the user prompt.
 - `--system`: add a system prompt.
-- `--max-tokens`: override the 16,384 cap.
+- `--max-tokens`: override the 50,000 cap.
 - `--temperature`: override the provider default. Kimi and Claude models
   reject custom values and report an error.
 - `--workers`: parallel requests, default 4.
@@ -113,7 +113,7 @@ Useful options:
 
 ## Pricing
 
-`config/llm_pricing.json` records CNY list prices per 1M tokens for all 20
+`src/name2smiles/llm/llm_pricing.json` records CNY list prices per 1M tokens for all 20
 models. `src/name2smiles/llm/pricing.py` turns normalized `Usage` into a cost
 estimate, including cache read and cache write. The human-readable table and
 caveats are in [`llm_pricing.md`](llm_pricing.md).
@@ -144,7 +144,7 @@ defaults, and verified behavior.
 
 ## Defaults and behavior
 
-- `max_tokens`: 16,384.
+- `max_tokens`: 50,000.
 - `temperature`: omitted, so each provider uses its own default.
 - `stream`: false.
 - Retries: up to four attempts on 408, 409, 425, 429, and 5xx responses.
@@ -180,7 +180,7 @@ defaults, and verified behavior.
 4. Set `supports_temperature=False` when the model rejects custom values.
 5. Add low and high reasoning bodies to `_REASONING_LOW` and
    `_REASONING_HIGH` when the model supports effort controls.
-6. Add the price entry to `config/llm_pricing.json`.
+6. Add the price entry to `src/name2smiles/llm/llm_pricing.json`.
 7. Run the smoke test for that model.
 
 The registry is checked by `validate_registry()` and by the test suite.

@@ -15,9 +15,8 @@ to 28% on the hardest.
 This is a budget-limited first run. It uses 100 of the 1,500 v0 records, and
 the eight systems are lightweight, Flash, or preview models from their
 vendors, not flagship models. Read the numbers as a low-cost comparison, not
-a ranking of each vendor's best model. The generated data and the 800-row
-JSONL are not included in this repository; contact the author if you need
-them.
+a ranking of each vendor's best model. The 100-record mini set is included in
+this repository. Contact the author for the full dataset or the 800-row evaluation JSONL.
 
 ## Results
 
@@ -110,7 +109,7 @@ token comparisons are approximate.
   were completed with reasoning `low`, maximum output 25,000, and a 1,200 s
   timeout. The 42 rows are GLM 11, LongCat 18, and MiMo 13. The other 758 rows
   use `high`.
-- **Cost:** list prices in `config/llm_pricing.json`, with DeepSeek off-peak.
+- **Cost:** list prices in `src/name2smiles/llm/llm_pricing.json`, with DeepSeek off-peak.
   Failed attempts that returned no usage are not priced. The total is an
   estimate, not a provider bill.
 - **Caveat:** the 42 low-effort rows are the hardest cases for those three
@@ -147,15 +146,15 @@ On the machine that produced this report, raw artifacts are in
 - `logs/`: main run and retry logs.
 - `summary.json`: recomputed summary used by the figures.
 
-The `data/` directory is ignored by Git, so a clone does not include these
-files. Contact the author if you need them. The figures are in
+These raw evaluation artifacts stay local. A clone includes the mini-set JSONL
+and CSV. Contact the author for the raw artifacts. The figures are in
 `docs/figures/eval_mini_100/`. The model icons are in `assets/icons/`, with
 rendered PNGs under the figure directory.
 
 ## Data and license
 
-The generated data is not included in this repository. Contact the author if
-you need it. Code is MIT; the dataset, documentation, and figures are CC BY
+The mini-set JSONL and CSV are included. Contact the author for the full dataset
+and raw evaluation outputs. Code is MIT; the dataset, documentation, and figures are CC BY
 4.0. If you reuse the data, cite PubChem:
 
 > Kim S, Chen J, Cheng T, et al. PubChem 2025 update. *Nucleic Acids Res.*

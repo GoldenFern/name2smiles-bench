@@ -16,7 +16,11 @@ venv/
 *.key
 
 # Generated data
-data/
+data/*
+!data/mini_100.jsonl
+!data/mini_100.csv
+build/
+dist/
 
 # Local state
 tmp/

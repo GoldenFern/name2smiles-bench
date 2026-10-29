@@ -14,7 +14,7 @@ from typing import Any, Literal
 
 ApiStyle = Literal["openai", "anthropic"]
 
-DEFAULT_MAX_TOKENS = 16_384
+DEFAULT_MAX_TOKENS = 50_000
 
 
 @dataclass(frozen=True)

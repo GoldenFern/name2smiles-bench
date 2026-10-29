@@ -3,6 +3,7 @@ import json
 import pytest
 
 from name2smiles.llm import (
+    DEFAULT_MAX_TOKENS,
     LLMClient,
     LLMError,
     MODELS,
@@ -34,6 +35,11 @@ CANDIDATE_KEYS = {
     "gemini-4-argon",
     "gemini-3.8-flash",
 }
+
+
+def test_default_output_cap():
+    assert DEFAULT_MAX_TOKENS == 50_000
+    assert all(spec.max_tokens == 50_000 for spec in MODELS.values())
 
 
 class FakeResponse:

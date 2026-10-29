@@ -38,9 +38,15 @@ python scripts/make_mini_report.py
   retries, and caching stay in one place.
 - LLM requests must go through `name2smiles.llm` so provider endpoints,
   auth headers, token fields, and retries stay in one place.
-- Model prices live in `config/llm_pricing.json`. Keep
+- Model prices live in `src/name2smiles/llm/llm_pricing.json` and ship as
+  package data. Keep
   `docs/llm_pricing.md` and the pricing tests in sync when prices change.
-- Do not commit `data/`. It holds generated records, images, and SDF files.
+- Track only `data/mini_100.jsonl` and `data/mini_100.csv` under `data/`.
+  Keep the full dataset, images, SDF files, and evaluation outputs local.
+- Mini-set tests run from a fresh clone. The subset-membership test also
+  checks the full dataset when available, and skips when it is absent.
+- The default client output cap is 50,000 tokens. The batch and tier-probe
+  runners keep their separate 100,000-token defaults for benchmark runs.
 - `data/mini_100.jsonl`, `data/mini_100.csv`, and `docs/mini_100.md` are
   generated together by `scripts/select_mini_dataset.py`. Rerun the selector
   after changing the difficulty score or coverage targets.

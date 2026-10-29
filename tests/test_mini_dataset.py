@@ -4,6 +4,8 @@ import json
 from collections import Counter
 from pathlib import Path
 
+import pytest
+
 from name2smiles.descriptors import charge_bin, ring_bin, size_bin
 from name2smiles.difficulty import (
     COMPONENT_MAX,
@@ -57,6 +59,8 @@ def test_mini_dataset_difficulty_fields():
 
 
 def test_mini_dataset_ids_exist_in_full_set():
+    if not BENCHMARK.is_file():
+        pytest.skip("Full 1,500-record dataset is required for subset validation")
     mini_ids = {record["id"] for record in load(MINI)}
     full_ids = {record["id"] for record in load(BENCHMARK)}
     assert mini_ids <= full_ids

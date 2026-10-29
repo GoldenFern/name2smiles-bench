@@ -11,14 +11,12 @@
 
 ## 评测结果
 
-**评测范围：** 受资金成本限制，首轮只从 1500 条数据中选了 100 条。被测的
-8 个模型是各家的轻量、Flash 或预览模型，不是旗舰模型。结果用于低成本横向
-比较，不代表各家最高水平。
+八个模型回答同一百个 PubChem 名称，每个名称一次调用。Claude Haiku 5.5 的
+精确匹配率最高，为 79%。GPT-6.1 Terra 最便宜，每百条 0.07 元，每 100 个正
+确答案 0.11 元。准确率从最简单层的 78% 降到最难层的 28%。
 
-八个模型回答同一百个 PubChem 名称，每个名称一次调用。800 次调用在重试后全
-部完成。Claude Haiku 5.5 的精确匹配率最高，为 79%。GPT-6.1 Terra 最便宜，
-每百条 0.07 元，每 100 个正确答案 0.11 元。准确率从最简单层的 78% 降到最
-难层的 28%。
+评测启用思维链，并在模型支持时将推理强度设为 `high`。其中 42 条重试记录
+使用 `low`，具体设置见完整报告。
 
 ![各模型精确匹配率](docs/figures/eval_mini_100/leaderboard.png)
 
@@ -34,8 +32,11 @@
 | MiMo V2.6 Flash | 30% | 32% | 74% | 0.94 | 3.13 |
 
 完整报告见 [docs/eval_mini_100.zh-CN.md](docs/eval_mini_100.zh-CN.md)，包含分层
-结果、token 使用、运行设置和注意事项。800 行原始 JSONL 和日志不随仓库提交，
-获取方式见下方「数据获取」。
+结果、token 使用、运行设置和注意事项。
+
+**评测范围：** 受资金成本限制，首轮只从 1500 条数据中选了 100 条。被测的
+8 个模型是各家的轻量、Flash 或预览模型，不是旗舰模型。结果用于低成本横向
+比较，不代表各家最高水平。
 
 ## 功能
 
@@ -78,6 +79,14 @@ Copy-Item .env.example .env
 
 ## 快速开始
 
+仓库已包含 100 条小测试集，安装后可直接离线运行测试：
+
+```powershell
+python -m pytest tests/
+```
+
+以下命令用于从 PubChem 构建完整数据集，需要联网：
+
 ```powershell
 python scripts/sample_candidates.py --n 20000
 python scripts/select_dataset.py --n 1500
@@ -88,8 +97,9 @@ python scripts/select_mini_dataset.py --n 100
 
 `sample_candidates.py` 从 PubChem 随机抽取 CID，保留通过筛选的结构。
 `select_dataset.py` 按覆盖分箱贪心挑选。`build_dataset.py` 抓取名称、同义
-词、结构图和坐标文件，中断后重跑即可继续。`data/` 是生成目录，不纳入版本
-管理，新克隆的仓库需要本地重建。构建依赖 PubChem 的实时内容，因此今天重建
+词、结构图和坐标文件，中断后重跑即可继续。完整数据集及图像、坐标文件保留在
+本地，仓库只提交 `data/mini_100.jsonl` 和 `data/mini_100.csv`。
+构建依赖 PubChem 的实时内容，因此今天重建
 的结果在下述细节上可能与版本 0 不同。
 
 ## 使用与配置
@@ -134,10 +144,9 @@ python scripts/select_mini_dataset.py --n 100
 
 小测试集覆盖全部 53 种官能团、所有元素类别、所有重原子、环、立体和电荷分
 箱，包含 84 个不同的非空 Murcko 骨架和 16 条无环记录。记录沿用原编号和资
-产路径，直接复用完整数据集的图像与 SDF 文件。
+产路径；图像与 SDF 文件由本地完整数据集提供，名称转 SMILES 评测无需这些文件。
 
 ```powershell
-python scripts/select_mini_dataset.py --n 100
 python scripts/evaluate_name2smiles.py --data data/mini_100.jsonl --limit 100 --models "deepseek-flash,qwen3.8-flash" --workers 6 --reasoning low
 ```
 
@@ -157,7 +166,10 @@ python scripts/smoke_llm.py --provider deepseek
 python scripts/smoke_llm.py --models "deepseek-v4-pro,glm-5.3"
 ```
 
-默认输出上限为 16,384 token。请求不带温度参数，各服务商使用自己的默认值。
+客户端默认输出上限为 50,000 token。在高思维链强度下处理极为困难的任务时，
+部分厂商的模型仍可能需要超过 50,000 token，输出会因达到上限而截断。可通过
+`--max-tokens` 调整，具体受模型接口限制。批量评测与分层探测脚本各自默认使用
+100,000 token。请求不带温度参数，各服务商使用自己的默认值。
 连通性测试的结果写入 `data/llm_smoke_<时间戳>.jsonl`。
 
 先导评测用 10 条均衡记录跑低成本模型：
@@ -172,9 +184,9 @@ python scripts/evaluate_name2smiles.py --pilot --workers 6 --reasoning low
 
 ### 成本估算
 
-价格存放在 `config/llm_pricing.json`，说明文档为
+价格随安装包分发，存放在 `src/name2smiles/llm/llm_pricing.json`，说明文档为
 [`docs/llm_pricing.md`](docs/llm_pricing.md)。表内单位为每百万 token 人民币
-价格，记录 4Router 分组显示价，已包含分组倍率。
+价格，按配置中记录的有效单价估算。
 
 ```powershell
 python scripts/estimate_costs.py --records 1500 --input-tokens 200 --output-tokens 800
@@ -208,9 +220,9 @@ scripts/
   estimate_costs.py
   evaluate_name2smiles.py
 tests/
-config/llm_pricing.json   # 机器可读的模型价格
+src/name2smiles/llm/llm_pricing.json  # 随安装包分发的模型价格
 docs/                     # 覆盖报告、数据集说明、小测试集、大模型笔记
-data/                     # 生成的记录与资产，不纳入版本管理
+data/                     # 提交 100 条小测试集，其余生成数据保留在本地
 ```
 
 ## 测试
@@ -220,12 +232,16 @@ python -m pytest tests/
 ```
 
 测试覆盖描述符、名称规则、难度打分、PubChem 客户端、大模型客户端、价格表
-和小测试集约束。测试可离线运行，不需要 API 密钥。
+和小测试集约束。测试可离线运行，不需要 API 密钥。小集归属完整集的检查仅在本地
+存在 `data/benchmark_v0.jsonl` 时运行，干净克隆会跳过这一项。GitHub Actions
+在 Python 3.11 下执行安装、测试及安装后价格资源检查。
 
 ## 数据获取
 
-生成的数据集和评测输出不在仓库中。`data/` 由构建脚本生成，已被 Git 忽略。
-需要 1500 条完整数据、100 条测试集或 800 行评测 JSONL 时，请联系作者。
+100 条小测试集随仓库提供：[JSONL](data/mini_100.jsonl) 和
+[CSV](data/mini_100.csv)，包含名称、参考结构、描述符及难度信息。
+1500 条完整数据、图像、坐标文件和评测原始输出保留在本地。需要完整数据或
+800 行评测 JSONL 时，请联系作者。
 
 ## 许可证
 

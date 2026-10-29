@@ -14,16 +14,14 @@ benchmark across eight models is complete; the headline results are below.
 
 ## Benchmark results
 
-**Scope:** budget limits kept the first run to 100 of the 1,500 records. The
-eight systems are lightweight, Flash, or preview models from their vendors,
-not flagship models. Read this as a low-cost comparison, not a ranking of each
-vendor's best model.
-
-Eight models answered the same 100 PubChem names, one call per name. All 800
-calls completed after retries. Claude Haiku 5.5 leads exact match at 79%.
+Eight models answered the same 100 PubChem names, one call per name.
+Claude Haiku 5.5 leads exact match at 79%.
 GPT-6.1 Terra is the cheapest at CNY 0.07 per 100 names and CNY 0.11 per 100
 exact answers. Accuracy falls from 78% on the easiest tier to 28% on the
 hardest.
+
+Reasoning was enabled and set to `high` where supported. Forty-two retry
+records used `low`; see the full report for the detailed settings.
 
 ![Exact-match rate by model](docs/figures/eval_mini_100/leaderboard.png)
 
@@ -39,8 +37,12 @@ hardest.
 | MiMo V2.6 Flash | 30% | 32% | 74% | 0.94 | 3.13 |
 
 See [the full report](docs/eval_mini_100.md) for tier breakdowns, token use,
-run settings, and caveats. The raw 800-row JSONL and logs are not committed;
-see [Data availability](#data-availability).
+run settings, and caveats.
+
+**Scope:** budget limits kept the first run to 100 of the 1,500 records. The
+eight systems are lightweight, Flash, or preview models from their vendors,
+not flagship models. Read this as a low-cost comparison, not a ranking of each
+vendor's best model.
 
 ## Features
 
@@ -87,6 +89,16 @@ is missing.
 
 ## Quick start
 
+The repository includes the 100-record mini set. After installation, run the
+tests offline:
+
+```powershell
+python -m pytest tests/
+```
+
+To build the full dataset from PubChem, run the following commands with an
+internet connection:
+
 ```powershell
 python scripts/sample_candidates.py --n 20000
 python scripts/select_dataset.py --n 1500
@@ -98,8 +110,9 @@ python scripts/select_mini_dataset.py --n 100
 `sample_candidates.py` draws random CIDs from PubChem and keeps structures
 that pass the filters. `select_dataset.py` fills coverage bins greedily.
 `build_dataset.py` fetches names, synonyms, images, and coordinate files, and
-is resumable: rerun it to continue. `data/` is generated and not tracked, so
-a fresh clone rebuilds it locally. The pipeline depends on live PubChem
+is resumable: rerun it to continue. The full dataset, images, and coordinate
+files stay local; only `data/mini_100.jsonl` and `data/mini_100.csv` are tracked.
+The pipeline depends on live PubChem
 content, so a rebuild today can differ in details from the version 0 counts
 below.
 
@@ -148,10 +161,10 @@ ring, stereo, charge, flag, and functional-group bins.
 The mini set covers all 53 functional groups, all element classes, all
 heavy-atom, ring, stereo, and charge bins, and 84 unique non-empty Murcko
 scaffolds plus 16 acyclic records. Records keep their original IDs and asset
-paths, so the full set's images and SDF files are reused.
+paths. Images and SDF files come from the local full dataset; name-to-SMILES
+evaluation does not require them.
 
 ```powershell
-python scripts/select_mini_dataset.py --n 100
 python scripts/evaluate_name2smiles.py --data data/mini_100.jsonl --limit 100 --models "deepseek-flash,qwen3.8-flash" --workers 6 --reasoning low
 ```
 
@@ -174,7 +187,11 @@ python scripts/smoke_llm.py --provider deepseek
 python scripts/smoke_llm.py --models "deepseek-v4-pro,glm-5.3"
 ```
 
-The default output cap is 16,384 tokens. Temperature is omitted so each
+The client defaults to a 50,000-token output cap. On extremely difficult
+tasks with high reasoning effort, some vendors' models may still need more
+than 50,000 tokens and have their output truncated at the cap. Adjust it with
+`--max-tokens`, subject to the model API's limits. The batch and tier-probe
+runners each default to 100,000 tokens. Temperature is omitted so each
 provider uses its own default. The smoke test writes results to
 `data/llm_smoke_<timestamp>.jsonl`.
 
@@ -190,10 +207,9 @@ model and record pair, plus a summary JSON file under `data/`.
 
 ### Cost estimation
 
-Prices live in `config/llm_pricing.json` and are documented in
+Prices ship with the package in `src/name2smiles/llm/llm_pricing.json` and are documented in
 [`docs/llm_pricing.md`](docs/llm_pricing.md). The table uses CNY per 1M tokens
-and records the 4Router group price as displayed, with the group multiplier
-already applied.
+and estimates costs using the effective unit prices recorded in the configuration.
 
 ```powershell
 python scripts/estimate_costs.py --records 1500 --input-tokens 200 --output-tokens 800
@@ -227,9 +243,9 @@ scripts/
   estimate_costs.py
   evaluate_name2smiles.py
 tests/
-config/llm_pricing.json   # machine-readable model prices
+src/name2smiles/llm/llm_pricing.json  # bundled model prices
 docs/                     # coverage, datasheet, mini set, LLM notes
-data/                     # generated records and assets, not tracked
+data/                     # tracked mini-100 set; other generated data stays local
 ```
 
 ## Tests
@@ -240,14 +256,18 @@ python -m pytest tests/
 
 The suite covers descriptors, naming rules, difficulty scoring, the PubChem
 client, the LLM client, the pricing table, and the mini-set invariants. It
-runs offline and needs no API key.
+runs offline and needs no API key. The subset-membership check runs only when
+the local `data/benchmark_v0.jsonl` exists; a fresh clone skips that one test.
+GitHub Actions checks installation, tests, and installed pricing resources
+on Python 3.11.
 
 ## Data availability
 
-The generated dataset and evaluation outputs are not included in this
-repository. `data/` is produced by the build scripts and ignored by Git.
-Contact the author if you need the full 1,500-record dataset, the 100-record
-mini set, or the 800-row evaluation JSONL.
+The 100-record mini set is included as [JSONL](data/mini_100.jsonl) and
+[CSV](data/mini_100.csv), with names, reference structures, descriptors, and
+difficulty metadata. The full 1,500-record dataset, images, coordinate files,
+and raw evaluation outputs stay local. Contact the author if you need the
+full dataset or the 800-row evaluation JSONL.
 
 ## License
 
