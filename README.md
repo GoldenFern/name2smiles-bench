@@ -9,7 +9,33 @@ benchmark from PubChem, with reference structures, descriptor metadata, 2D
 depictions, and coordinate files, then runs candidate models through one
 provider-agnostic client and scores their answers with RDKit. Version 0 is
 built: 1,500 records selected for coverage of elements, ring systems,
-stereochemistry, charge states, and functional groups.
+stereochemistry, charge states, and functional groups. A first 100-record
+benchmark across eight models is complete; the headline results are below.
+
+## Benchmark results
+
+Eight models answered the same 100 PubChem names, one call per name. All 800
+calls completed after retries. Claude Haiku 5.5 leads exact match at 79%.
+GPT-6.1 Terra is the cheapest at CNY 0.07 per 100 names and CNY 0.11 per 100
+exact answers. Accuracy falls from 78% on the easiest tier to 28% on the
+hardest.
+
+![Exact-match rate by model](docs/figures/eval_mini_100/leaderboard.png)
+
+| Model | Exact | Connectivity | Valid | CNY / 100 names | CNY / 100 exact |
+|---|---:|---:|---:|---:|---:|
+| Claude Haiku 5.5 | 79% | 84% | 100% | 0.20 | 0.25 |
+| DeepSeek Flash | 74% | 80% | 100% | 5.04 | 6.82 |
+| MiniMax M3.1 Flash | 71% | 74% | 98% | 2.12 | 2.99 |
+| Gemini 3.8 Flash | 70% | 81% | 94% | 4.86 | 6.94 |
+| GPT-6.1 Terra | 62% | 70% | 93% | 0.07 | 0.11 |
+| GLM 5.3 Flash | 49% | 54% | 91% | 2.17 | 4.42 |
+| LongCat 2.5 Preview | 46% | 52% | 88% | 4.80 | 10.43 |
+| MiMo V2.6 Flash | 30% | 32% | 74% | 0.94 | 3.13 |
+
+See [the full report](docs/eval_mini_100.md) for tier breakdowns, token use,
+run settings, and caveats. The raw 800-row JSONL and logs are in
+`data/eval_mini_100_20261028T231806/` and are not tracked.
 
 ## Features
 
@@ -29,8 +55,8 @@ stereochemistry, charge states, and functional groups.
 - One client for 20 models across 10 providers, handling
   OpenAI-compatible and Anthropic-compatible APIs, token accounting, and
   reasoning controls.
-- A price table and cost estimator, plus a pilot evaluation script that
-  parses SMILES and scores them with RDKit.
+- A price table and cost estimator, plus pilot and resumable batch runners that
+  parse SMILES and score them with RDKit.
 - A resumable build pipeline with rate-limited, cached PubChem requests.
 
 ## Requirements

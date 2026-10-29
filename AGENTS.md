@@ -22,6 +22,9 @@ python scripts/regenerate_large_images.py
 python scripts/smoke_llm.py --all
 python scripts/estimate_costs.py --records 1500 --input-tokens 200 --output-tokens 800
 python scripts/evaluate_name2smiles.py --pilot --workers 6 --reasoning low
+python scripts/eval_tier_probe.py --preflight-only
+python scripts/eval_mini_batch.py --data data/mini_100.jsonl --timeout-seconds 2400
+python scripts/make_mini_report.py
 ```
 
 ## Conventions
@@ -41,5 +44,7 @@ python scripts/evaluate_name2smiles.py --pilot --workers 6 --reasoning low
 - `data/mini_100.jsonl`, `data/mini_100.csv`, and `docs/mini_100.md` are
   generated together by `scripts/select_mini_dataset.py`. Rerun the selector
   after changing the difficulty score or coverage targets.
+- `scripts/eval_mini_batch.py` appends one JSONL row per completed call.
+  Resume a long run with `--resume` and the same `--output` file.
 - Do not hardcode secrets. LLM keys live in `.env`; only the environment
   variable names appear in code and logs.
