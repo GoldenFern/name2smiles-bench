@@ -471,6 +471,21 @@ def test_retries_on_rate_limit():
     assert result.attempts == 2
 
 
+def test_provider_concurrency_override():
+    spec = resolve_model("deepseek-flash")
+    provider = PROVIDERS[spec.provider]
+    client = LLMClient(
+        env={provider.api_key_env: "test-key"},
+        session=FakeSession([]),
+        provider_concurrency={"deepseek": 5},
+    )
+
+    assert client._semaphores["deepseek"]._value == 5
+    assert (
+        client._semaphores["zhipu"]._value == PROVIDERS["zhipu"].max_concurrency
+    )
+
+
 def test_missing_key_raises_without_network():
     spec = resolve_model("deepseek-flash")
     session = FakeSession([])

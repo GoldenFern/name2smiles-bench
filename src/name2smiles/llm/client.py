@@ -44,6 +44,7 @@ class LLMClient:
         sleep: Callable[[float], None] = time.sleep,
         max_attempts: int = 4,
         timeout: tuple[float, float] | None = None,
+        provider_concurrency: Mapping[str, int] | None = None,
     ) -> None:
         """Create a client.
 
@@ -57,6 +58,8 @@ class LLMClient:
             max_attempts: Total attempts per call, including the first one.
             timeout: Optional `(connect, read)` override. Otherwise each
                 provider's timeout is used.
+            provider_concurrency: Optional per-provider concurrency override.
+                Providers not listed keep their registry value.
         """
         if env is None:
             path = Path(env_path) if env_path is not None else DEFAULT_ENV_PATH
@@ -68,8 +71,14 @@ class LLMClient:
         self._max_attempts = max(1, max_attempts)
         self._timeout = timeout
         self._local = threading.local()
+        overrides = dict(provider_concurrency or {})
         self._semaphores = {
-            provider_id: threading.Semaphore(max(1, provider.max_concurrency))
+            provider_id: threading.Semaphore(
+                max(
+                    1,
+                    overrides.get(provider_id, provider.max_concurrency),
+                )
+            )
             for provider_id, provider in PROVIDERS.items()
         }
 

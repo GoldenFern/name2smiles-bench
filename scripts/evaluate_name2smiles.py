@@ -122,8 +122,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--reasoning",
         default="low",
-        choices=["none", "low", "high", "max"],
-        help="reasoning level; low is the cost-controlled demo default",
+        choices=["default", "none", "low", "high", "max"],
+        help="reasoning level; default/none sends no reasoning body",
     )
     parser.add_argument(
         "--max-tokens",
@@ -455,6 +455,8 @@ def main() -> None:
     )
 
     rows: list[dict[str, Any]] = []
+    partial_path = output.with_name(output.stem + ".partial.jsonl")
+    partial_path.write_text("", encoding="utf-8", newline="\n")
     with ThreadPoolExecutor(max_workers=max(1, min(args.workers, total))) as executor:
         futures = {
             executor.submit(
@@ -463,7 +465,7 @@ def main() -> None:
                 spec,
                 record,
                 args.max_tokens,
-                None if args.reasoning == "none" else args.reasoning,
+                None if args.reasoning in {"default", "none"} else args.reasoning,
             ): (index, spec, record)
             for index, spec, record in tasks
         }
@@ -484,6 +486,8 @@ def main() -> None:
                 }
             )
             rows.append(row)
+            with partial_path.open("a", encoding="utf-8", newline="\n") as partial:
+                partial.write(json.dumps(row_to_dict(row), ensure_ascii=False) + "\n")
             if row["ok"]:
                 result = row["result"]
                 predicted = row["predicted_smiles"] or "(no parse)"
@@ -495,6 +499,8 @@ def main() -> None:
                 print(
                     f"[{index:>3}/{total}] {spec.key:<22} {record['id']} "
                     f"{status:<7} {result.latency_ms / 1000:5.1f}s  "
+                    f"fin={result.finish_reason or '-'} "
+                    f"out={result.usage.output_tokens or 0}  "
                     f"{predicted[:60]}",
                     flush=True,
                 )
@@ -518,6 +524,7 @@ def main() -> None:
         json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
         encoding="utf-8",
     )
+    partial_path.unlink(missing_ok=True)
     print_summary(summary)
     print(f"wrote: {output}")
     print(f"wrote: {summary_path}")
