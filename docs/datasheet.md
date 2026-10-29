@@ -48,7 +48,9 @@ can later support image-to-SMILES experiments.
 
 A 100-record subset is available in `data/mini_100.jsonl` for quick,
 low-cost evaluation. Records keep their original IDs, images, and coordinate
-paths.
+paths. The first model benchmark used this subset because of budget limits;
+the eight tested models are lightweight, Flash, or preview models, not
+flagship models.
 
 - Difficulty score: a weighted sum of name length, numeric locants, bracket
   nesting, stereo descriptors, heavy atoms, rings, stereo centers,
@@ -114,16 +116,28 @@ two-component salts with common counterions are retained.
 - The mini set inherits all v0 name and structure limitations. It is a
   subset, not a separate curation pass.
 - No manual review of all 1,500 records yet.
+- The first benchmark covers 100 of 1,500 records and lightweight models. It
+  does not estimate flagship-model performance.
 - Some multi-component salts and organometallic records may be difficult to
   depict or embed in 3D.
 - The benchmark split is not defined yet.
 
 ## Licensing
 
-PubChem computed structure and descriptor data is free to use. Some PubChem
-annotations come from third-party sources with separate licenses; version 0
-does not redistribute those annotations. The dataset license for this project
-is not decided yet.
+The source code is released under the MIT License. The dataset, documentation,
+and figures created by this project are released under CC BY 4.0. See
+`LICENSE` and `LICENSE-DATA` at the repository root.
+
+The dataset is derived from PubChem. PubChem asks users to cite it when a
+significant portion is reused. Cite:
+
+Kim S, Chen J, Cheng T, Gindulyte A, He J, He S, Li Q, Shoemaker BA,
+Thiessen PA, Yu B, Zaslavsky L, Zhang J, Bolton EE. PubChem 2025 update.
+Nucleic Acids Res. 2025;53(D1):D1516-D1525. doi:10.1093/nar/gkae1059.
+
+PubChem aggregates data from many sources. Some records or annotations may
+carry third-party terms. The project does not claim ownership of PubChem
+source data. See `NOTICE` for details.
 
 ## Safety
 

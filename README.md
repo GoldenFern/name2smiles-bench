@@ -14,6 +14,11 @@ benchmark across eight models is complete; the headline results are below.
 
 ## Benchmark results
 
+**Scope:** budget limits kept the first run to 100 of the 1,500 records. The
+eight systems are lightweight, Flash, or preview models from their vendors,
+not flagship models. Read this as a low-cost comparison, not a ranking of each
+vendor's best model.
+
 Eight models answered the same 100 PubChem names, one call per name. All 800
 calls completed after retries. Claude Haiku 5.5 leads exact match at 79%.
 GPT-6.1 Terra is the cheapest at CNY 0.07 per 100 names and CNY 0.11 per 100
@@ -34,8 +39,8 @@ hardest.
 | MiMo V2.6 Flash | 30% | 32% | 74% | 0.94 | 3.13 |
 
 See [the full report](docs/eval_mini_100.md) for tier breakdowns, token use,
-run settings, and caveats. The raw 800-row JSONL and logs are in
-`data/eval_mini_100_20261028T231806/` and are not tracked.
+run settings, and caveats. The raw 800-row JSONL and logs are not committed;
+see [Data availability](#data-availability).
 
 ## Features
 
@@ -237,8 +242,29 @@ The suite covers descriptors, naming rules, difficulty scoring, the PubChem
 client, the LLM client, the pricing table, and the mini-set invariants. It
 runs offline and needs no API key.
 
+## Data availability
+
+The generated dataset and evaluation outputs are not included in this
+repository. `data/` is produced by the build scripts and ignored by Git.
+Contact the author if you need the full 1,500-record dataset, the 100-record
+mini set, or the 800-row evaluation JSONL.
+
 ## License
 
-No license has been chosen yet. The repository is unpublished, so the code is
-not licensed for reuse. PubChem computed data is free to use; the dataset
-license and any third-party annotation terms will be decided before release.
+The source code is released under the MIT License. The dataset, documentation,
+and figures created by this project are released under the Creative Commons
+Attribution 4.0 International License (CC BY 4.0). See [`LICENSE`](LICENSE) and
+[`LICENSE-DATA`](LICENSE-DATA). CC BY 4.0 is used for the data because PubChem
+asks for attribution when its data is reused.
+
+The dataset is derived from PubChem. PubChem asks users to cite it when a
+significant portion is reused. If you use this dataset, cite:
+
+> Kim S, Chen J, Cheng T, Gindulyte A, He J, He S, Li Q, Shoemaker BA,
+> Thiessen PA, Yu B, Zaslavsky L, Zhang J, Bolton EE. PubChem 2025 update.
+> *Nucleic Acids Res.* 2025;53(D1):D1516-D1525.
+> doi:10.1093/nar/gkae1059.
+
+PubChem aggregates data from many sources, and some records may carry
+third-party terms. The project does not claim ownership of PubChem source
+data. See [`NOTICE`](NOTICE) for details.

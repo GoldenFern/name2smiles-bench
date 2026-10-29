@@ -10,6 +10,15 @@ to 28% on the hardest.
 
 ![Exact-match rate by model](figures/eval_mini_100/leaderboard.png)
 
+## Scope
+
+This is a budget-limited first run. It uses 100 of the 1,500 v0 records, and
+the eight systems are lightweight, Flash, or preview models from their
+vendors, not flagship models. Read the numbers as a low-cost comparison, not
+a ranking of each vendor's best model. The generated data and the 800-row
+JSONL are not included in this repository; contact the author if you need
+them.
+
 ## Results
 
 One hundred records per model. `Exact` is canonical isomeric SMILES equality.
@@ -130,16 +139,29 @@ python scripts/eval_mini_batch.py --data data/mini_100.jsonl `
   --timeout-seconds 2400 --workers-per-model 5
 ```
 
-Raw artifacts are in `data/eval_mini_100_20261028T231806/`:
+On the machine that produced this report, raw artifacts are in
+`data/eval_mini_100_20261028T231806/`:
 
 - `dedup.jsonl`: 800 rows, the latest row for each model and name.
 - `raw.jsonl`: 971 rows, including failed attempts and requeues.
 - `logs/`: main run and retry logs.
 - `summary.json`: recomputed summary used by the figures.
 
-The `data/` directory is ignored by Git. The figures are in
+The `data/` directory is ignored by Git, so a clone does not include these
+files. Contact the author if you need them. The figures are in
 `docs/figures/eval_mini_100/`. The model icons are in `assets/icons/`, with
 rendered PNGs under the figure directory.
+
+## Data and license
+
+The generated data is not included in this repository. Contact the author if
+you need it. Code is MIT; the dataset, documentation, and figures are CC BY
+4.0. If you reuse the data, cite PubChem:
+
+> Kim S, Chen J, Cheng T, et al. PubChem 2025 update. *Nucleic Acids Res.*
+> 2025;53(D1):D1516-D1525. doi:10.1093/nar/gkae1059.
+
+See the root README for the full license notes.
 
 ## Trademarks
 

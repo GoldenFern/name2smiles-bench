@@ -4,6 +4,10 @@ Records: **100** selected from **1500** benchmark records.
 
 The set is a difficulty-graded subset. Difficulty is a heuristic weighted score built from name complexity and structure complexity. It is meant for quick model comparison, not for absolute claims about model capability. The extremes of the score range are seeded first; the remaining slots are filled by coverage.
 
+The first model benchmark used this set because of budget limits. It covers
+eight lightweight, Flash, or preview models, not flagship models. See
+`docs/eval_mini_100.md` for the results.
+
 ## Difficulty ladder
 
 | Tier | Label | Score range | Quota | Offset | Selected | Score min | Score median | Score max | Heavy atoms median | Name length median |

@@ -1,0 +1,29 @@
+Name2SMILES Dataset
+Copyright (c) 2026 GoldenFern
+
+Data source
+-----------
+
+PubChem
+National Center for Biotechnology Information
+National Library of Medicine
+National Institutes of Health
+https://pubchem.ncbi.nlm.nih.gov/
+
+Citation
+--------
+
+Kim S, Chen J, Cheng T, Gindulyte A, He J, He S, Li Q, Shoemaker BA,
+Thiessen PA, Yu B, Zaslavsky L, Zhang J, Bolton EE. PubChem 2025 update.
+Nucleic Acids Res. 2025;53(D1):D1516-D1525. doi:10.1093/nar/gkae1059.
+
+Third-party material
+--------------------
+
+PubChem aggregates data from many sources. Some records or annotations may
+carry third-party terms. This project redistributes the fields needed for the
+name-to-SMILES benchmark and does not claim ownership of PubChem source data.
+
+Model names and logos in the benchmark report are trademarks of their
+respective owners. They identify the systems tested and do not imply
+endorsement.

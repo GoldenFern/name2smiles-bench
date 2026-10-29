@@ -6,6 +6,13 @@
 
 ![各模型精确匹配率](figures/eval_mini_100/leaderboard.png)
 
+## 评测范围
+
+这是一次受资金成本限制的首轮评测。数据从 1500 条版本 0 记录中选取 100 条，
+被测的 8 个模型是各家的轻量、Flash 或预览模型，不是旗舰模型。结果用于低
+成本横向比较，不代表各家最高水平。生成的数据和 800 行 JSONL 不在仓库中，
+需要请联系作者。
+
 ## 结果
 
 每个模型 100 条记录。`精确` 指规范异构 SMILES 完全一致；`连接性` 指去掉立体化学后一致；`有效` 指 RDKit 能解析答案；`Tanimoto` 是对有效答案计算的 Morgan 指纹平均相似度；`费用` 是按标价估算的 100 次完成调用成本。
@@ -77,14 +84,26 @@ python scripts/eval_mini_batch.py --data data/mini_100.jsonl `
   --timeout-seconds 2400 --workers-per-model 5
 ```
 
-原始材料在 `data/eval_mini_100_20261028T231806/`：
+在产生本报告的机器上，原始材料在 `data/eval_mini_100_20261028T231806/`：
 
 - `dedup.jsonl`：800 行，每个模型和名称保留最新一行。
 - `raw.jsonl`：971 行，包含失败尝试和重新入队的记录。
 - `logs/`：主批次和重试日志。
 - `summary.json`：绘图使用的重新汇总结果。
 
-`data/` 已被 Git 忽略。图片在 `docs/figures/eval_mini_100/`，模型图标源文件在 `assets/icons/`，渲染后的 PNG 在图片目录下。
+`data/` 已被 Git 忽略，克隆仓库不会包含这些文件。需要请联系作者。图片在
+`docs/figures/eval_mini_100/`，模型图标源文件在 `assets/icons/`，渲染后的 PNG
+在图片目录下。
+
+## 数据与许可证
+
+生成的数据不在仓库中，需要请联系作者。代码使用 MIT，数据集、文档和图表
+使用 CC BY 4.0。复用数据时请引用 PubChem：
+
+> Kim S, Chen J, Cheng T, et al. PubChem 2025 update. *Nucleic Acids Res.*
+> 2025;53(D1):D1516-D1525. doi:10.1093/nar/gkae1059.
+
+完整说明见根目录 README。
 
 ## 商标
 

@@ -11,6 +11,10 @@
 
 ## 评测结果
 
+**评测范围：** 受资金成本限制，首轮只从 1500 条数据中选了 100 条。被测的
+8 个模型是各家的轻量、Flash 或预览模型，不是旗舰模型。结果用于低成本横向
+比较，不代表各家最高水平。
+
 八个模型回答同一百个 PubChem 名称，每个名称一次调用。800 次调用在重试后全
 部完成。Claude Haiku 5.5 的精确匹配率最高，为 79%。GPT-6.1 Terra 最便宜，
 每百条 0.07 元，每 100 个正确答案 0.11 元。准确率从最简单层的 78% 降到最
@@ -30,8 +34,8 @@
 | MiMo V2.6 Flash | 30% | 32% | 74% | 0.94 | 3.13 |
 
 完整报告见 [docs/eval_mini_100.zh-CN.md](docs/eval_mini_100.zh-CN.md)，包含分层
-结果、token 使用、运行设置和注意事项。800 行原始 JSONL 和日志在
-`data/eval_mini_100_20261028T231806/`，该目录不随仓库提交。
+结果、token 使用、运行设置和注意事项。800 行原始 JSONL 和日志不随仓库提交，
+获取方式见下方「数据获取」。
 
 ## 功能
 
@@ -218,7 +222,25 @@ python -m pytest tests/
 测试覆盖描述符、名称规则、难度打分、PubChem 客户端、大模型客户端、价格表
 和小测试集约束。测试可离线运行，不需要 API 密钥。
 
+## 数据获取
+
+生成的数据集和评测输出不在仓库中。`data/` 由构建脚本生成，已被 Git 忽略。
+需要 1500 条完整数据、100 条测试集或 800 行评测 JSONL 时，请联系作者。
+
 ## 许可证
 
-尚未选择许可证。仓库未公开，代码暂未授权他人复用。PubChem 计算数据可自由
-使用，数据集许可证和第三方标注的使用条款将在发布前确定。
+源代码使用 MIT 许可证。本项目生成的数据集、文档和图表使用知识共享署名
+4.0 国际许可证（CC BY 4.0）。见 [`LICENSE`](LICENSE) 和
+[`LICENSE-DATA`](LICENSE-DATA)。数据采用 CC BY 4.0，是因为 PubChem 要求在
+复用其数据时保留署名。
+
+数据集来自 PubChem。PubChem 要求在复用较大比例数据时引用它。使用本数据集
+时请引用：
+
+> Kim S, Chen J, Cheng T, Gindulyte A, He J, He S, Li Q, Shoemaker BA,
+> Thiessen PA, Yu B, Zaslavsky L, Zhang J, Bolton EE. PubChem 2025 update.
+> *Nucleic Acids Res.* 2025;53(D1):D1516-D1525.
+> doi:10.1093/nar/gkae1059.
+
+PubChem 汇总了多个来源的数据，部分记录可能附带第三方条款。本项目不主张
+PubChem 源数据的所有权。详见 [`NOTICE`](NOTICE)。
