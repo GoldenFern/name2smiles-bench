@@ -106,6 +106,16 @@ def test_isotope_bonus():
     assert labeled.score == plain.score + 10.0
 
 
+def test_score_rounding_at_half_tenth():
+    record = make_record(
+        name="1-(2-ethylhexyl)-2-methyl-3-(4-morpholin-4-ylbutyl)guanidine",
+        heavy_atoms=23,
+        rings={"count": 1},
+        stereo={"centers": 1, "double_bonds": 0},
+    )
+    assert score_record(record).score == 14.6
+
+
 def test_score_is_capped():
     record = score_record(
         make_record(

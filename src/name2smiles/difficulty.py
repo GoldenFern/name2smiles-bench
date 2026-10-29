@@ -10,6 +10,7 @@ extreme feature cannot dominate the total. The final score is clamped to 100.
 
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from typing import Any
@@ -188,7 +189,8 @@ def score_record(record: dict[str, Any]) -> Difficulty:
         "isotope": 10.0 if record.get("has_isotope") else 0.0,
         "radical": 10.0 if record.get("is_radical") else 0.0,
     }
-    score = round(min(100.0, sum(components.values())), 1)
+    # Keep rounding stable across Python versions with different sum algorithms.
+    score = round(min(100.0, math.fsum(components.values())), 1)
     tier = tier_for_score(score)
     return Difficulty(
         score=score,
