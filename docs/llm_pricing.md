@@ -8,13 +8,13 @@ The machine-readable table is `config/llm_pricing.json`. The estimator is
 
 ## Domestic models
 
-Official mainland China list prices. DeepSeek uses the peak tier; GLM-5.3-Flash
+Official mainland China list prices. DeepSeek uses the off-peak tier; GLM-5.3-Flash
 uses the standard tier; MiMo uses realtime inference.
 
 | Model | Vendor | Input | Output | Cache read | Cache write | Source type |
 |---|---|---:|---:|---:|---:|---:|
-| `deepseek-v4-pro` | DeepSeek | 9.00 | 27.00 | 0.30 | not published | official |
-| `deepseek-flash` | DeepSeek | 2.00 | 8.00 | 0.04 | not published | official |
+| `deepseek-v4-pro` | DeepSeek | 4.50 | 13.50 | 0.15 | not published | official |
+| `deepseek-flash` | DeepSeek | 1.00 | 4.00 | 0.02 | not published | official |
 | `glm-5.3` | Zhipu AI | 8.00 | 28.00 | 2.00 | not published | official |
 | `glm-5.3-flash` | Zhipu AI | 0.80 | 2.80 | 0.23 | not published | official |
 | `minimax-m3.1-flash` | MiniMax | 1.00 | 4.00 | 0.10 | not published | official |
@@ -57,15 +57,15 @@ The full table comes from `python scripts/estimate_costs.py`.
 | `qwen3.8-max` | 46.80 | 31.20 |
 | `claude-opus-5.5` | 41.58 | 27.72 |
 | `glm-5.3` | 36.00 | 24.00 |
-| `deepseek-v4-pro` | 35.10 | 23.40 |
 | `kimi-k2.6` | 34.35 | 22.90 |
 | `gpt-6-astra` | 31.50 | 21.00 |
 | `gemini-4-argon` | 25.20 | 16.80 |
-| `deepseek-flash` | 10.20 | 6.80 |
+| `deepseek-v4-pro` | 17.55 | 11.70 |
 | `longcat-2.5-preview` | 10.20 | 6.80 |
 | `gemini-3.8-flash` | 9.45 | 6.30 |
 | `mimo-v2.6-pro` | 8.10 | 5.40 |
 | `gpt-6.1-sol` | 6.30 | 4.20 |
+| `deepseek-flash` | 5.10 | 3.40 |
 | `minimax-m3.1-flash` | 5.10 | 3.40 |
 | `glm-5.3-flash` | 3.60 | 2.40 |
 | `qwen3.8-flash` | 3.48 | 2.32 |
@@ -74,7 +74,7 @@ The full table comes from `python scripts/estimate_costs.py`.
 | `claude-haiku-5.5` | 1.04 | 0.69 |
 | `gpt-6-luna` | 0.32 | 0.21 |
 
-Total across all 20 models: about **399.66 CNY** for one 1,500-record pass.
+Total across all 20 models: about **377.01 CNY** for one 1,500-record pass.
 
 The real cost depends on the prompt, the amount of reasoning, cache hits, and
 provider discounts. Use a pilot run to replace these token assumptions.
@@ -100,9 +100,9 @@ cost = uncached_input / 1M * input_price
 
 ## Caveats
 
-- **DeepSeek:** prices above are peak. Off-peak is half price. Peak is Beijing
+- **DeepSeek:** prices above are off-peak. Peak is double. Peak is Beijing
   time Monday to Friday, 09:00-12:00 and 14:00-18:00, excluding public
-  holidays.
+  holidays. Off-peak covers all other times, including weekends and holidays.
 - **GLM-5.3-Flash:** standard price above. A limited-time 50% discount gives
   0.40 / 1.40 / 0.115. Cache storage is free for now.
 - **LongCat-2.5-Preview:** all published prices are limited-time launch

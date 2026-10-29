@@ -14,8 +14,8 @@ def test_domestic_prices_are_recorded():
     pricing = load_pricing()
 
     expected = {
-        "deepseek-v4-pro": (9.0, 27.0, 0.3),
-        "deepseek-flash": (2.0, 8.0, 0.04),
+        "deepseek-v4-pro": (4.5, 13.5, 0.15),
+        "deepseek-flash": (1.0, 4.0, 0.02),
         "glm-5.3": (8.0, 28.0, 2.0),
         "glm-5.3-flash": (0.8, 2.8, 0.23),
         "minimax-m3.1-flash": (1.0, 4.0, 0.1),
